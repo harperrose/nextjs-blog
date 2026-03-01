@@ -2,7 +2,44 @@ media:
   input: public/assets
   output: /assets
   categories: [ "image" ]
+
 content:
+  # ─── CARDS (shared, named, reusable) ───────────────────────────────────────
+  - name: cards
+    label: Cards
+    type: collection
+    path: _cards
+    view:
+      fields: [ name, title ]
+    fields:
+      - { name: name, label: "Internal Name / Slug", type: string, required: true }
+      - { name: title, label: "Card Title", type: string, required: true }
+      - { name: paragraph, label: Paragraph, type: text }
+      - { name: image, label: Image, type: image }
+      - { name: link, label: Link URL, type: string }
+
+  # ─── SERVICES ───────────────────────────────────────────────────────────────
+  - name: services
+    label: Services
+    type: collection
+    path: _services
+    view:
+      fields: [ name ]
+    fields:
+      - { name: name, label: Name, type: string, required: true }
+      - { name: description, label: Description, type: text }
+      - name: images
+        label: "Images / Cards (up to 5)"
+        type: list
+        max: 5
+        fields:
+          - { name: image, label: Image, type: image }
+          - { name: label, label: Label, type: string }
+          - name: card
+            label: "Or: Reference a Card (by Internal Name)"
+            type: string
+
+  # ─── PROJECTS ───────────────────────────────────────────────────────────────
   - name: projects
     label: Projects
     type: collection
@@ -12,7 +49,8 @@ content:
     fields:
       - { name: title, label: Title, type: string, required: true }
       - { name: excerpt, label: Excerpt, type: string }
-      - { name: coverImage, label: Cover image, type: image }
+      - { name: coverImage, label: "Cover Image", type: image }
+      - { name: coverLabel, label: "Cover Image Label", type: string }
       - { name: date, label: Date, type: date, options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" } }
       - name: author
         label: Author
@@ -21,8 +59,31 @@ content:
           - { name: name, label: Name, type: string }
           - { name: picture, label: Picture, type: image }
       - name: ogImage
-        label: Image (social sharing)
+        label: "Image (social sharing)"
         type: object
         fields:
           - { name: url, label: URL, type: image }
-      - { name: body, label: Body, type: rich-text }
+      - name: services
+        label: Services
+        type: list
+        fields:
+          - { name: service, label: "Service (name)", type: string }
+      - name: sections
+        label: Sections (up to 6)
+        type: list
+        max: 6
+        fields:
+          - { name: sectionTitle, label: "Section Title", type: string }
+          - name: body
+            label: Body
+            type: rich-text
+            options:
+              components:
+                - name: CardBlock
+                  label: "Card Block (paginated)"
+                  fields:
+                    - name: cards
+                      label: "Cards (by Internal Name)"
+                      type: list
+                      fields:
+                        - { name: card, label: "Card Internal Name", type: string }

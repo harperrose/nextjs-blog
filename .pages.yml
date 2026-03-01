@@ -3,10 +3,10 @@ media:
   output: /assets
   categories: [ "image" ]
 content:
-  - name: posts
-    label: Posts
+  - name: Projects
+    label: Projects
     type: collection
-    path: _posts
+    path: _projects
     view:
       fields: [ coverImage, title, date ]
     fields:
